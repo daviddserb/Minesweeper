@@ -1,0 +1,22 @@
+.grid {
+  height: 360px; /*fiecare patratel are 40*40 px si tabla de joc este de 9x9 => 9 * 40 = 360 px*/
+  width: 360px;
+  margin: 100px auto; /*pozitionarea in pagina*/
+  display: flex; /*pentru a pune fiecare patrat in linie*/
+  flex-wrap: wrap; /*sa fie unul langa altu, ca sa incapa in tabla*/
+  background-color: grey;
+}
+
+.grid div { /*vreau sa modific DOAR div-urile din clasa grid, adica DOAR patratelele*/
+  height: 40px; /*fiecare patratel are 40 inaltime si 40 latime*/
+  width: 40px;
+  cursor: pointer; /*cand pui cursor-ul pe un patrat, devine pointer, adica iti indica ca poti da click*/
+  border: 1px solid #000000; /*toate liniile oriz. si vert. din tabla de joc*/
+  box-shadow: 0 0 0 1px #000000; /*cele 4 linii exterioare ale tablei de joc*/
+  text-align: center; /*numerele sa apara in mijlocul patratului*/
+  font-size: 10px; /*dimensiunea numerelor din fiecare patratel*/
+}
+
+.bombs {
+  background-color: red;
+}
