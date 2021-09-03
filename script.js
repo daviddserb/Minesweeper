@@ -39,7 +39,6 @@ function generateBoard() {
     })
   }
 
-  //vedem unde avem bombe si in functie de asta punem nr. in patratele (0 <= nr. din patratel <= 8)
   for(let i = 0; i < width * height; ++i) {
     let neighborBombs = 0;
     let firstUpLine = false, firstDownLine = false, firstLeftLine = false, firstRightLine = false;
@@ -56,7 +55,8 @@ function generateBoard() {
       firstRightLine = true;
     }
 
-    if(squares[i].classList.contains("normals")) { //punem nr. doar in patratelele normale
+    //vedem unde avem bombe si in functie de asta punem nr. in patratele (0 <= nr. din patratel <= 8)
+    if(squares[i].classList.contains("normals")) {
       if (firstUpLine == false && squares[i - width].classList.contains("bombs")) { //sus
         ++neighborBombs;
       }
@@ -91,7 +91,6 @@ function generateBoard() {
 }
 
 function clickSquare(square) {
-  console.log("a fost apasat patratul cu id-ul: " + square.id)
   if(gameEnd) { //daca a apasat pe o bomba => game over (a pierdut)
     return; //iesim din functie si automat dezactivam apasarea tuturor butoanelor
   }
@@ -122,9 +121,8 @@ function clickSquare(square) {
   }
 }
 
-//cand dau click pe un patratel gol, sa imi deschida cum trebuie restul patratelelor
+//cand se da click pe un patratel gol
 function checkNeighborSquares(square) {
-  console.log("se intra in functia checkNeighborSquares()");
   let firstUpLine = false, firstDownLine = false, firstLeftLine = false, firstRightLine = false;
 
   //verificam daca suntem pe linia de: SUS sau JOS si STANGA sau DREAPTA
@@ -142,55 +140,46 @@ function checkNeighborSquares(square) {
   if (firstUpLine == false) { //sus
     const upSquaresId = parseInt(square.id) - width;
     const upSquares = document.getElementById(upSquaresId);
-    console.log("SUS, patratul cu id-ul: " + upSquaresId);
     clickSquare(upSquares);
   }
   if (firstDownLine == false) { //jos
     const downSquaresId = parseInt(square.id) + width;
     const downSquares = document.getElementById(downSquaresId);
-    console.log("JOS, patratul cu id-ul: " + downSquaresId);
     clickSquare(downSquares);
   }
   if (firstLeftLine == false) { //stanga
     const leftSquaresId = parseInt(square.id) - 1;
     const leftSquares = document.getElementById(leftSquaresId);
-    console.log("STANGA, patratul cu id-ul: " + leftSquaresId);
     clickSquare(leftSquares);
     if (firstUpLine == false) { //sus-stanga mijloc
       const upLeftSquaresId = parseInt(square.id) - width - 1;
       const upLeftSquares = document.getElementById(upLeftSquaresId);
-      console.log("SUS STANGA, patratul cu id-ul: " + upLeftSquaresId);
       clickSquare(upLeftSquares);
     }
     if (firstDownLine == false) { //jos-stanga mijloc
       const downLeftSquaresId = parseInt(square.id) + width - 1;
       const downLeftSquares = document.getElementById(downLeftSquaresId);
-      console.log("JOS STANGA, patratul cu id-ul: " + downLeftSquaresId);
       clickSquare(downLeftSquares);
     }
   }
   if (firstDownLine == false) { //jos
     const downSquaresId = parseInt(square.id) + width;
     const downSquares = document.getElementById(downSquaresId);
-    console.log("SUB, patratul cu id-ul: " + downSquaresId);
     clickSquare(downSquares);
   }
   if (firstRightLine == false) { //dreapta
     const rightSquaresId = parseInt(square.id) + 1;
     const rightSquares = document.getElementById(rightSquaresId);
-    console.log("DREAPTA, patratul cu id-ul: " + rightSquaresId);
     clickSquare(rightSquares);
 
     if (firstDownLine == false) { //jos-dreapta mijloc
       const underRightSquaresId = parseInt(square.id) + width + 1;
       const underRightSquares = document.getElementById(underRightSquaresId);
-      console.log("JOS DREAPTA, patratul cu id-ul: " + underRightSquaresId);
       clickSquare(underRightSquares);
     }
     if (firstUpLine == false) { //sus-dreapta mijloc
       const upRightSquaresId = parseInt(square.id) - width + 1;
       const upRightSquares = document.getElementById(upRightSquaresId);
-      console.log("SUS DREAPTA, patratul cu id-ul: " + upRightSquaresId);
       clickSquare(upRightSquares);
     }
   }
@@ -200,7 +189,7 @@ function startCountUpTimer() {
   if(gameEnd) { //daca s-a apasat pe o bomba
     return; //oprim timer-ul
   }
-  if (countSeconds == 999) { //la 999 de secs. jucate se opreste timer-ul
+  if (countSeconds == 999) { //la 999 de secs. jucate se opreste timer-ul (cronometrarea)
     return;
   }
 
@@ -209,14 +198,11 @@ function startCountUpTimer() {
 }
 
 function printTimer(val) {
-  var valString = val + ""; // + "" pt. a afla lungimea numarului
-  if (valString.length < 2) { //pt. nr. de 1 cifra (1 -> 9)
-    return "00" + valString;
-  } else if (valString.length < 3) { //pt. nr. de 2 cifre (10 -> 99)
-    return "0" + valString;
-  } else { //pt. restul nr. (100 -> 999)
-    return valString;
+  let valString = val + ""; //il facem de tip string (pt. a afla lungimea mai usor)
+  while (valString.length < 3) {
+    valString = "0".concat(valString);
   }
+  return valString;
 }
 
 function addFlag(square) {
@@ -255,7 +241,6 @@ function lostGame() {
   //afisez toate bombele si steagurile bune si gresite, cand s-a apasat un patratel cu bomba
   for (let i = 0; i < width * height; ++i) {
     if (!squares[i].classList.contains("bombs") && squares[i].classList.contains("flags")) {
-      console.log("wrong flag");
       squares[i].classList.add("wrongFlag");
       squares[i].innerHTML = "🚩";
     } else if(squares[i].classList.contains("bombs") && !squares[i].classList.contains("flags")) {
