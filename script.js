@@ -44,52 +44,59 @@ function generateBoard() {
 function addNumbersInSquares() {
   for(let i = 0; i < width * height; ++i) {
     let neighborBombs = 0;
-    let firstUpLine = false, firstDownLine = false, firstLeftLine = false, firstRightLine = false;
-
-    //verific daca sunt pe linia de: SUS sau JOS si STANGA sau DREAPTA
-    if (i <= 8) { //prima linie sus
-      firstUpLine = true;
-    } else if (i >= 72) { //prima linie jos
-      firstDownLine = true;
-    }
-    if (i % width == 0) { //prima linie stanga
-      firstLeftLine = true;
-    } else if ((i + 1) % width == 0) { //prima linie dreapta
-      firstRightLine = true;
-    }
+    squarePosition(i);
+    let allEdges = squarePosition(i);
+    let edgeUp = allEdges[0], edgeDown = allEdges[1], edgeLeft = allEdges[2], edgeRight = allEdges[3];
 
     if(squares[i].classList.contains("normals")) { //punem nr. doar in patratelele normale
-      if (firstUpLine == false && squares[i - width].classList.contains("bombs")) { //sus
+      if (edgeUp == false && squares[i - width].classList.contains("bombs")) { //sus
         ++neighborBombs;
       }
-      if (firstLeftLine == false) {
-        if (firstUpLine == false && squares[i - width - 1].classList.contains("bombs")) { //sus-stanga mijloc
+      if (edgeLeft == false) {
+        if (edgeUp == false && squares[i - width - 1].classList.contains("bombs")) { //sus-stanga mijloc
           ++neighborBombs;
         }
         if (squares[i - 1].classList.contains("bombs")) { //stanga
           ++neighborBombs;
         }
-        if (firstDownLine == false && squares[i + width - 1].classList.contains("bombs")) { //jos-stanga mijloc
+        if (edgeDown == false && squares[i + width - 1].classList.contains("bombs")) { //jos-stanga mijloc
           ++neighborBombs;
         }
       }
-      if (firstDownLine == false && squares[i + width].classList.contains("bombs")) { //jos
+      if (edgeDown == false && squares[i + width].classList.contains("bombs")) { //jos
         ++neighborBombs;
       }
-      if (firstRightLine == false) {
-        if (firstDownLine == false && squares[i + width + 1].classList.contains("bombs")) { //jos-dreapta mijloc
+      if (edgeRight == false) {
+        if (edgeDown == false && squares[i + width + 1].classList.contains("bombs")) { //jos-dreapta mijloc
           ++neighborBombs;
         }
         if (squares[i + 1].classList.contains("bombs")) { //dreapta
          ++neighborBombs;
         }
-        if (firstUpLine == false && squares[i - width + 1].classList.contains("bombs")) { //sus-dreapta mijloc
+        if (edgeUp == false && squares[i - width + 1].classList.contains("bombs")) { //sus-dreapta mijloc
           ++neighborBombs;
         }
       }
       squares[i].setAttribute("neighborBombs", neighborBombs);
     }
   }
+}
+
+function squarePosition(pos) {
+  let edgeUp = false, edgeDown = false, edgeLeft = false, edgeRight = false;
+
+  //verific daca sunt pe linia de: SUS sau JOS si STANGA sau DREAPTA
+  if (pos <= 8) { //prima linie sus
+    edgeUp = true;
+  } else if (pos >= 72) { //prima linie jos
+    edgeDown = true;
+  }
+  if (pos % width == 0) { //prima linie stanga
+    edgeLeft = true;
+  } else if ((pos + 1) % width == 0) { //prima linie dreapta
+    edgeRight = true;
+  }
+  return [edgeUp, edgeDown, edgeLeft, edgeRight];
 }
 
 function clickSquare(square) {
@@ -125,61 +132,51 @@ function clickSquare(square) {
 
 //cand se da click pe un patratel gol, sa se deschida si restul patratelelor (ca in jocul original)
 function checkNeighborSquares(square) {
-  let firstUpLine = false, firstDownLine = false, firstLeftLine = false, firstRightLine = false;
+  squarePosition(square.id);
+  let allEdges = squarePosition(square.id);
+  let edgeUp = allEdges[0], edgeDown = allEdges[1], edgeLeft = allEdges[2], edgeRight = allEdges[3];
 
-  //verificam daca suntem pe linia de: SUS sau JOS si STANGA sau DREAPTA
-  if (square.id <= 8) { //prima linie sus
-    firstUpLine = true;
-  } else if (square.id >= 72) { //prima linie jos
-    firstDownLine = true;
-  }
-  if (square.id % width == 0) { //prima linie stanga
-    firstLeftLine = true;
-  } else if ((square.id + 1) % width == 0) { //prima linie dreapta
-    firstRightLine = true;
-  }
-
-  if (firstUpLine == false) { //sus
+  if (edgeUp == false) { //sus
     const upSquaresId = parseInt(square.id) - width;
     const upSquares = document.getElementById(upSquaresId);
     clickSquare(upSquares);
   }
-  if (firstDownLine == false) { //jos
+  if (edgeDown == false) { //jos
     const downSquaresId = parseInt(square.id) + width;
     const downSquares = document.getElementById(downSquaresId);
     clickSquare(downSquares);
   }
-  if (firstLeftLine == false) { //stanga
+  if (edgeLeft == false) { //stanga
     const leftSquaresId = parseInt(square.id) - 1;
     const leftSquares = document.getElementById(leftSquaresId);
     clickSquare(leftSquares);
-    if (firstUpLine == false) { //sus-stanga mijloc
+    if (edgeUp == false) { //sus-stanga mijloc
       const upLeftSquaresId = parseInt(square.id) - width - 1;
       const upLeftSquares = document.getElementById(upLeftSquaresId);
       clickSquare(upLeftSquares);
     }
-    if (firstDownLine == false) { //jos-stanga mijloc
+    if (edgeDown == false) { //jos-stanga mijloc
       const downLeftSquaresId = parseInt(square.id) + width - 1;
       const downLeftSquares = document.getElementById(downLeftSquaresId);
       clickSquare(downLeftSquares);
     }
   }
-  if (firstDownLine == false) { //jos
+  if (edgeDown == false) { //jos
     const downSquaresId = parseInt(square.id) + width;
     const downSquares = document.getElementById(downSquaresId);
     clickSquare(downSquares);
   }
-  if (firstRightLine == false) { //dreapta
+  if (edgeRight == false) { //dreapta
     const rightSquaresId = parseInt(square.id) + 1;
     const rightSquares = document.getElementById(rightSquaresId);
     clickSquare(rightSquares);
 
-    if (firstDownLine == false) { //jos-dreapta mijloc
+    if (edgeDown == false) { //jos-dreapta mijloc
       const underRightSquaresId = parseInt(square.id) + width + 1;
       const underRightSquares = document.getElementById(underRightSquaresId);
       clickSquare(underRightSquares);
     }
-    if (firstUpLine == false) { //sus-dreapta mijloc
+    if (edgeUp == false) { //sus-dreapta mijloc
       const upRightSquaresId = parseInt(square.id) - width + 1;
       const upRightSquares = document.getElementById(upRightSquaresId);
       clickSquare(upRightSquares);
