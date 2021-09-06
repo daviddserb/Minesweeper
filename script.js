@@ -125,59 +125,59 @@ function clickSquare(square) {
     if (neighborBombs != 0) {
       square.innerHTML = neighborBombs;
     } else if (neighborBombs == 0){
-      checkNeighborSquares(square);
+      checkNeighborSquares(square.id);
     }
   }
 }
 
 //cand se da click pe un patratel gol, sa se deschida si restul patratelelor (ca in jocul original)
-function checkNeighborSquares(square) {
-  squarePosition(square.id);
-  let allEdges = squarePosition(square.id);
+function checkNeighborSquares(squareId) {
+  squarePosition(squareId);
+  let allEdges = squarePosition(squareId);
   let edgeUp = allEdges[0], edgeDown = allEdges[1], edgeLeft = allEdges[2], edgeRight = allEdges[3];
 
   if (edgeUp == false) { //sus
-    const upSquaresId = parseInt(square.id) - width;
+    const upSquaresId = parseInt(squareId) - width;
     const upSquares = document.getElementById(upSquaresId);
     clickSquare(upSquares);
   }
   if (edgeDown == false) { //jos
-    const downSquaresId = parseInt(square.id) + width;
+    const downSquaresId = parseInt(squareId) + width;
     const downSquares = document.getElementById(downSquaresId);
     clickSquare(downSquares);
   }
   if (edgeLeft == false) { //stanga
-    const leftSquaresId = parseInt(square.id) - 1;
+    const leftSquaresId = parseInt(squareId) - 1;
     const leftSquares = document.getElementById(leftSquaresId);
     clickSquare(leftSquares);
     if (edgeUp == false) { //sus-stanga mijloc
-      const upLeftSquaresId = parseInt(square.id) - width - 1;
+      const upLeftSquaresId = parseInt(squareId) - width - 1;
       const upLeftSquares = document.getElementById(upLeftSquaresId);
       clickSquare(upLeftSquares);
     }
     if (edgeDown == false) { //jos-stanga mijloc
-      const downLeftSquaresId = parseInt(square.id) + width - 1;
+      const downLeftSquaresId = parseInt(squareId) + width - 1;
       const downLeftSquares = document.getElementById(downLeftSquaresId);
       clickSquare(downLeftSquares);
     }
   }
   if (edgeDown == false) { //jos
-    const downSquaresId = parseInt(square.id) + width;
+    const downSquaresId = parseInt(squareId) + width;
     const downSquares = document.getElementById(downSquaresId);
     clickSquare(downSquares);
   }
   if (edgeRight == false) { //dreapta
-    const rightSquaresId = parseInt(square.id) + 1;
+    const rightSquaresId = parseInt(squareId) + 1;
     const rightSquares = document.getElementById(rightSquaresId);
     clickSquare(rightSquares);
 
     if (edgeDown == false) { //jos-dreapta mijloc
-      const underRightSquaresId = parseInt(square.id) + width + 1;
+      const underRightSquaresId = parseInt(squareId) + width + 1;
       const underRightSquares = document.getElementById(underRightSquaresId);
       clickSquare(underRightSquares);
     }
     if (edgeUp == false) { //sus-dreapta mijloc
-      const upRightSquaresId = parseInt(square.id) - width + 1;
+      const upRightSquaresId = parseInt(squareId) - width + 1;
       const upRightSquares = document.getElementById(upRightSquaresId);
       clickSquare(upRightSquares);
     }
