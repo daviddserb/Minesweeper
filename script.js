@@ -24,26 +24,29 @@ function generateBoard() {
   //creez patratelele si le pun in tabla de joc
   for (let i = 0; i < width * height; ++i) {
     var square = document.createElement("div"); //creez un element HTML cu tag-ul div (patratelul)
-    square.id = i; //atribui fiecarui patratel, un id unic (SAU .setAttribute("id", i))
+    square.setAttribute("id", i); //sau square.id = i;
     square.classList.add(shuffle[i]); //adaug 'bombs' sau 'normals' la clasa patratelului
     grid.appendChild(square); //punem patratelul in tabla de joc
     squares[i] = square; //punem in sir, patratelul, care are div, id si clasa (bombs sau normals)
 
-    square.addEventListener("click", function() { //left click
+    square.addEventListener("click", function() { //left click (! si pt. ca am adaugat function() se trece mai departe in cod)
       clickSquare(squares[i]);
     })
 
     square.addEventListener("contextmenu", function(e) { //right click = contextmenu
-      e.preventDefault(); //daca inate se intampla ceva pe right click, acum nu se mai intampla, adica pe right click DOAR adaugam/stergem steaguri
+      e.preventDefault(); //daca inate deja se intampla ceva "eveniment" pe right click, acum nu se mai intampla, adica pe right click DOAR adaugam/stergem steaguri
       addFlag(squares[i]);
     })
   }
+  addNumbersInSquares();
+}
 
+function addNumbersInSquares() {
   for(let i = 0; i < width * height; ++i) {
     let neighborBombs = 0;
     let firstUpLine = false, firstDownLine = false, firstLeftLine = false, firstRightLine = false;
 
-    //verificam daca suntem pe linia de: SUS sau JOS si STANGA sau DREAPTA
+    //verific daca sunt pe linia de: SUS sau JOS si STANGA sau DREAPTA
     if (i <= 8) { //prima linie sus
       firstUpLine = true;
     } else if (i >= 72) { //prima linie jos
@@ -55,8 +58,7 @@ function generateBoard() {
       firstRightLine = true;
     }
 
-    //vedem unde avem bombe si in functie de asta punem nr. in patratele (0 <= nr. din patratel <= 8)
-    if(squares[i].classList.contains("normals")) {
+    if(squares[i].classList.contains("normals")) { //punem nr. doar in patratelele normale
       if (firstUpLine == false && squares[i - width].classList.contains("bombs")) { //sus
         ++neighborBombs;
       }
@@ -99,12 +101,12 @@ function clickSquare(square) {
     return;
   }
 
-  if (startTimer == "start") { //pornesc timer-ul cand dau primul click pe un patratel
+  if (startTimer == "start") { //pornesc timer-ul cand se da primul click pe un patratel
     setInterval(startCountUpTimer, 1000); //repeta functia startCountUpTimer() la fiecare 1000 milisecunde = 1 sec.
     startTimer = "stop";
   }
 
-  if (square.classList.contains("bombs")) { //GAME OVER => lost game
+  if (square.classList.contains("bombs")) {
     lostGame();
   } else {
     const neighborBombs = square.getAttribute("neighborBombs");
@@ -121,7 +123,7 @@ function clickSquare(square) {
   }
 }
 
-//cand se da click pe un patratel gol
+//cand se da click pe un patratel gol, sa se deschida si restul patratelelor (ca in jocul original)
 function checkNeighborSquares(square) {
   let firstUpLine = false, firstDownLine = false, firstLeftLine = false, firstRightLine = false;
 
@@ -189,7 +191,7 @@ function startCountUpTimer() {
   if(gameEnd) { //daca s-a apasat pe o bomba
     return; //oprim timer-ul
   }
-  if (countSeconds == 999) { //la 999 de secs. jucate se opreste timer-ul (cronometrarea)
+  if (countSeconds == 999) { //la 999 de secs. jucate se opreste timer-ul
     return;
   }
 
@@ -198,7 +200,7 @@ function startCountUpTimer() {
 }
 
 function printTimer(val) {
-  let valString = val + ""; //il facem de tip string (pt. a afla lungimea mai usor)
+  let valString = val + ""; //il facem de tip string, pt. a afla lungimea mai usor si a adauga '0' la inceput
   while (valString.length < 3) {
     valString = "0".concat(valString);
   }
@@ -238,7 +240,7 @@ function lostGame() {
   document.getElementById("gameStatus").innerHTML = "GAME OVER, YOU LOST!";
   document.getElementById("resetButton").innerHTML = "😱";
 
-  //afisez toate bombele si steagurile bune si gresite, cand s-a apasat un patratel cu bomba
+  //afisez toate bombele si steagurile bune si gresite
   for (let i = 0; i < width * height; ++i) {
     if (!squares[i].classList.contains("bombs") && squares[i].classList.contains("flags")) {
       squares[i].classList.add("wrongFlag");
