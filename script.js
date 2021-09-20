@@ -38,7 +38,7 @@ function generateBoard() {
 	      e.preventDefault(); //delete all the events that happen before on the right click
 	      addFlag(squaresArray[i][j]);
 	    })
-	  	}
+	}
   }
   addNumberInSquares();
 }
