@@ -1,19 +1,18 @@
 #grid {
-  width: 360px; /*fiecare patratel are 40*40 px si tabla de joc este de 9x9 => 9 * 40 = 360 px*/
-  height: 360px;
-  margin: 100px auto; /*pozitionarea in pagina*/
-  display: flex; /*pentru a pune fiecare patrat unul dupa altul, adica pe linie*/
-  flex-wrap: wrap; /*sa nu se ingramadeasca in tabla de joc, fiecare sa fie pe locul lui*/
-  background-color: grey;
+  display: grid;
+  grid-template-columns: repeat(9, auto);
+  width: 300px; /*the spacing between the columns formed by the squares*/
+  margin: 200px auto; /*page positioning, horizontal and vertical*/
 }
 
-#grid div { /*vreau sa modific DOAR div-urile din clasa grid, adica DOAR patratelele*/
-  width: 40px; /*fiecare patratel are 40 latime*/
-  height: 40px; /*si 40 inaltime*/
-  cursor: pointer; /*cand pui cursor-ul pe un patrat, devine pointer, adica iti indica ca poti da click*/
-  border: 1px solid #000000; /*toate liniile oriz. si vert. din tabla de joc*/
-  box-shadow: 0 0 0 1px #000000; /*cele 4 linii exterioare ale tablei de joc*/
-  text-align: center; /*numerele sa apara in mijlocul patratului*/
+#grid div {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #000000;
+  box-shadow: 0 0 0 1px #000000; /*the 4 outer lines*/
+  cursor: pointer;
+  text-align: center; /*numbers in the middle of the square*/
+  font-size: 25px; /*size of the numbers*/
 }
 
 .clicked {
@@ -28,3 +27,7 @@
   margin: auto;
   display: grid;
 }
+
+/*.bombs {
+  background-color: red;
+}*/
