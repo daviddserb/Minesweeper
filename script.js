@@ -116,7 +116,7 @@ function startCountUpTimer() {
 }
 
 function printTimer(val) {
-    let valString = val + ""; //we make it a string to find easier the length of the number
+    let valString = val + ""; //make it string to find the length easier
     while (valString.length < 3) {
         valString = "0".concat(valString);
     }
