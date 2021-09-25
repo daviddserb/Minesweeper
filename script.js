@@ -81,76 +81,76 @@ function clickSquare(square, line, col) {
         startTimer = "stop";
     }
 
-if (square.classList.contains("bombs")) {
-lostGame();
-} else {
-const neighborBombs = square.getAttribute("neighborBombs");
-square.classList.add("clicked");
-++clickedSquares;
-if (clickedSquares == width * height - nrOfBombs) {
-winGame();
-}
-if (neighborBombs != 0) {
-square.innerHTML = neighborBombs;
-} else {
-for (let i = line - 1; i < line + 2; ++i) {
-for (let j = col - 1; j < col + 2; ++j) {
-if (checkIfPosInBoard(i, j)) {
-let cellId = i + "" + j;
-let cell = document.getElementById(cellId);
-clickSquare(cell, i, j);
-}
-}
-}
-}
-}
+    if (square.classList.contains("bombs")) {
+        lostGame();
+    } else {
+        const neighborBombs = square.getAttribute("neighborBombs");
+        square.classList.add("clicked");
+        ++clickedSquares;
+        if (clickedSquares == width * height - nrOfBombs) {
+            winGame();
+        }
+        if (neighborBombs != 0) {
+            square.innerHTML = neighborBombs;
+        } else {
+            for (let i = line - 1; i < line + 2; ++i) {
+                for (let j = col - 1; j < col + 2; ++j) {
+                    if (checkIfPosInBoard(i, j)) {
+                        let cellId = i + "" + j;
+                        let cell = document.getElementById(cellId);
+                        clickSquare(cell, i, j);
+                    }
+                }
+            }
+        }
+    }
 }
 
 function startCountUpTimer() {
-	if (gameEnd || countSeconds == 999) {
-  	return;
-	}
+    if (gameEnd || countSeconds == 999) {
+        return;
+    }
 
-	++countSeconds;
-	secondsLabel.innerHTML = printTimer(countSeconds);
+    ++countSeconds;
+    secondsLabel.innerHTML = printTimer(countSeconds);
 }
 
 function printTimer(val) {
-	let valString = val + ""; //we make it a string to find easier the length of the number
-	while (valString.length < 3) {
-	    valString = "0".concat(valString);
-	}
+    let valString = val + ""; //we make it a string to find easier the length of the number
+    while (valString.length < 3) {
+        valString = "0".concat(valString);
+    }
 
-	return valString;
+    return valString;
 }
 
 function addFlag(square) {
-	if (gameEnd) {
-    return;
-	}
+    if (gameEnd) {
+        return;
+    }
 
-	if (startTimer == "start" && square.classList.contains("normals")) { //start the timer on the first flag on a square as well
-    setInterval(startCountUpTimer, 1000);
-    startTimer = "stop";
-	}
+    if (startTimer == "start" && square.classList.contains("normals")) { //start the timer on the first flag on a square as well
+        setInterval(startCountUpTimer, 1000);
+        startTimer = "stop";
+    }
 
-	if (!square.classList.contains("clicked") && !square.classList.contains("flags")) {
-    square.classList.add("flags");
-    ++countFlags;
-    square.innerHTML = "🚩";
-    remainingFlags.innerHTML = nrOfBombs - countFlags;
-	} else if (square.classList.contains("flags")) {
-    square.classList.remove("flags");
-    square.innerHTML = "";
-    --countFlags;
-    remainingFlags.innerHTML = nrOfBombs - countFlags;
-	}
+    if (!square.classList.contains("clicked") && !square.classList.contains("flags")) {
+        square.classList.add("flags");
+        ++countFlags;
+        square.innerHTML = "🚩";
+        remainingFlags.innerHTML = nrOfBombs - countFlags;
+    } else if (square.classList.contains("flags")) {
+        square.classList.remove("flags");
+        square.innerHTML = "";
+        --countFlags;
+        remainingFlags.innerHTML = nrOfBombs - countFlags;
+    }
 }
 
 function winGame() {
-  gameEnd = true;
-  document.getElementById("gameStatus").innerHTML = "CONGRATULATIONS, YOU WON!";
-  document.getElementById("resetButton").innerHTML = "😎";
+    gameEnd = true;
+    document.getElementById("gameStatus").innerHTML = "CONGRATULATIONS, YOU WON!";
+    document.getElementById("resetButton").innerHTML = "😎";
 }
 
 function lostGame() {
