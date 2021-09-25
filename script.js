@@ -57,7 +57,6 @@ function addNumberInSquares() {
 					}
 				}
 				squaresArray[i][j].setAttribute("neighborBombs", neighborBombs);
-				squaresArray[i][j].innerHTML = neighborBombs; //
 			}
 		}
 	}
