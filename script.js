@@ -154,21 +154,21 @@ function winGame() {
 }
 
 function lostGame() {
-  gameEnd = true;
-  document.getElementById("gameStatus").innerHTML = "GAME OVER, YOU LOST!";
-  document.getElementById("resetButton").innerHTML = "😱";
+    gameEnd = true;
+    document.getElementById("gameStatus").innerHTML = "GAME OVER, YOU LOST!";
+    document.getElementById("resetButton").innerHTML = "😱";
 
-  //print all the bombs and good and bad flags
-  for (let i = 0; i < width; ++i) {
-  	for (let j = 0; j < height; ++j) {
+    //print all the bombs and good and bad flags
+    for (let i = 0; i < width; ++i) {
+        for (let j = 0; j < height; ++j) {
 	    if (!squaresArray[i][j].classList.contains("bombs") && squaresArray[i][j].classList.contains("flags")) {
-	      squaresArray[i][j].classList.add("wrongFlag");
-	      squaresArray[i][j].innerHTML = "🚩";
+	        squaresArray[i][j].classList.add("wrongFlag");
+	        squaresArray[i][j].innerHTML = "🚩";
 	    } else if (squaresArray[i][j].classList.contains("bombs") && !squaresArray[i][j].classList.contains("flags")) {
-	      squaresArray[i][j].innerHTML = "💣";
+	        squaresArray[i][j].innerHTML = "💣";
 	    }
-	  }
-  }
+	}
+    }
 }
 
 generateBoard();
