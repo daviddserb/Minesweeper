@@ -14,97 +14,96 @@ var gameEnd = false; //will be true when won game
 var clickedSquares = 0; //will be used to check if won game
 
 function generateBoard() {
-  //make the shuffled array (normals + bombs)
-  const normalsArray = new Array(width * height - nrOfBombs).fill("normals"); //build an array of length 71 with all the elements named "normals"
-  const bombsArray = new Array(nrOfBombs).fill("bombs");
-  const normalsAndBombs = normalsArray.concat(bombsArray)
-  const shuffle = normalsAndBombs.sort(() => Math.random() - 0.5);
-
-  //make the squares
-  for (let i = 0, k = 0; i < width; ++i) {
+    //make the shuffled array (normals + bombs)
+    const normalsArray = new Array(width * height - nrOfBombs).fill("normals"); //build an array of length 71 with all the elements named "normals"
+    const bombsArray = new Array(nrOfBombs).fill("bombs");
+    const normalsAndBombs = normalsArray.concat(bombsArray)
+    const shuffle = normalsAndBombs.sort(() => Math.random() - 0.5);
+	
+    //make the squares
+    for (let i = 0, k = 0; i < width; ++i) {
   	for (let j = 0; j < height; ++j) {
-  		var square = document.createElement("div");
+  	    var square = document.createElement("div");
 	    square.setAttribute("id", i + "" + j);
 	    square.classList.add(shuffle[k++]); 
 	    squaresArray[i][j] = square;
 	    grid.appendChild(square);
 	    
 	    square.addEventListener("click", function() { //left click
-	      clickSquare(squaresArray[i][j], i, j);
+	        clickSquare(squaresArray[i][j], i, j);
 	    })
 
 	    square.addEventListener("contextmenu", function(e) { //right click = contextmenu
-	      e.preventDefault(); //delete all the events that happen before on the right click
-	      addFlag(squaresArray[i][j]);
+	        e.preventDefault(); //delete all the events that happen before on the right click
+	        addFlag(squaresArray[i][j]);
 	    })
-	  	}
-  }
-  addNumberInSquares();
+         }
+    }
+    addNumberInSquares();
 }
 
 function addNumberInSquares() {
-	for (let i = 0; i < width; ++i) {
-		for (let j = 0; j < height; ++j) {
-			let neighborBombs = 0;
-			if (squaresArray[i][j].classList.contains("normals")) {
-				for (let line = i - 1; line < i + 2 && line < width; ++line) {
-					for (let col = j - 1; col < j + 2 && col < height; ++col) {
-						if (checkIfPosInBoard(line, col)) {
-							if (squaresArray[line][col].classList.contains("bombs")) {
-								++neighborBombs;
-							}
-						}
-					}
-				}
-				squaresArray[i][j].setAttribute("neighborBombs", neighborBombs);
-			}
-		}
+    for (let i = 0; i < width; ++i) {
+	for (let j = 0; j < height; ++j) {
+	    let neighborBombs = 0;
+	    if (squaresArray[i][j].classList.contains("normals")) {
+	        for (let line = i - 1; line < i + 2 && line < width; ++line) {
+		    for (let col = j - 1; col < j + 2 && col < height; ++col) {
+		        if (checkIfPosInBoard(line, col)) {
+		            if (squaresArray[line][col].classList.contains("bombs")) {
+			        ++neighborBombs;
+			    }
+		        }
+		    }
+	        }
+		squaresArray[i][j].setAttribute("neighborBombs", neighborBombs);
+	    }
 	}
+    }
 }
 
 function checkIfPosInBoard (line, col) {
-	if (0 <= line && line <= 8 && 0 <= col && col <= 8) {
-		return true;
-	}
+    if (0 <= line && line <= 8 && 0 <= col && col <= 8) {
+        return true;
+    }
 }
 
 function clickSquare(square, line, col) {
-	if (gameEnd) {
-		return;
-	}
-	if (square.classList.contains("clicked") || square.classList.contains("flags")) {
-		console.log("sssssssss");
-	  return;
-	}
+    if (gameEnd) {
+        return;
+    }
+    if (square.classList.contains("clicked") || square.classList.contains("flags")) {
+        return;
+    }
 
-	if (startTimer == "start") { //start the timer on the first click on a square
-	  setInterval(startCountUpTimer, 1000); //repeat function startCountUpTimer() every 1000 milisecunde = 1 sec.
-	  startTimer = "stop";
-	}
+    if (startTimer == "start") { //start the timer on the first click on a square
+        setInterval(startCountUpTimer, 1000); //repeat function startCountUpTimer() every 1000 milisecunde = 1 sec.
+        startTimer = "stop";
+    }
 
-	if (square.classList.contains("bombs")) {
-	  lostGame();
-	} else {
-	  const neighborBombs = square.getAttribute("neighborBombs");
-	  square.classList.add("clicked");
-	  ++clickedSquares;
-	  if (clickedSquares == width * height - nrOfBombs) {
-	    winGame();
-	  }
-	  if (neighborBombs != 0) {
-	    square.innerHTML = neighborBombs;
-	  } else {
-	    for (let i = line - 1; i < line + 2; ++i) {
-	    	for (let j = col - 1; j < col + 2; ++j) {
-	    		if (checkIfPosInBoard(i, j)) {
-	    			let cellId = i + "" + j;
-	    			let cell = document.getElementById(cellId);
-	    			clickSquare(cell, i, j);
-	    		}
-	    	}
-	    }
-	  }
-	}
+if (square.classList.contains("bombs")) {
+lostGame();
+} else {
+const neighborBombs = square.getAttribute("neighborBombs");
+square.classList.add("clicked");
+++clickedSquares;
+if (clickedSquares == width * height - nrOfBombs) {
+winGame();
+}
+if (neighborBombs != 0) {
+square.innerHTML = neighborBombs;
+} else {
+for (let i = line - 1; i < line + 2; ++i) {
+for (let j = col - 1; j < col + 2; ++j) {
+if (checkIfPosInBoard(i, j)) {
+let cellId = i + "" + j;
+let cell = document.getElementById(cellId);
+clickSquare(cell, i, j);
+}
+}
+}
+}
+}
 }
 
 function startCountUpTimer() {
