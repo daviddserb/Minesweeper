@@ -49,10 +49,8 @@ function addNumberInSquares() {
 	    if (squaresArray[i][j].classList.contains("normals")) {
 	        for (let line = i - 1; line < i + 2 && line < width; ++line) {
 		    for (let col = j - 1; col < j + 2 && col < height; ++col) {
-		        if (checkIfPosInBoard(line, col)) {
-		            if (squaresArray[line][col].classList.contains("bombs")) {
-			        ++neighborBombs;
-			    }
+		        if (checkIfPosInBoard(line, col) && squaresArray[line][col].classList.contains("bombs")) {
+			    ++neighborBombs;
 		        }
 		    }
 	        }
