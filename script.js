@@ -76,7 +76,7 @@ function clickSquare(square, line, col) {
 
     if (startTimer == "start") { //start the timer on the first click on a square
         setInterval(startCountUpTimer, 1000); //repeat function startCountUpTimer() every 1000 milisecunde = 1 sec.
-        startTimer = "stop";
+        startTimer = "continue";
     }
 
     if (square.classList.contains("bombs")) {
@@ -129,7 +129,7 @@ function addFlag(square) {
 
     if (startTimer == "start" && square.classList.contains("normals")) { //start the timer on the first flag on a square as well
         setInterval(startCountUpTimer, 1000);
-        startTimer = "stop";
+        startTimer = "continue";
     }
 
     if (!square.classList.contains("clicked") && !square.classList.contains("flags")) {
