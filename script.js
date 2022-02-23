@@ -1,93 +1,95 @@
-const grid = document.getElementById("grid");
-const width = 9, height = width;
-const nrOfBombs = 10;
-var squaresArray = Array(9).fill().map(() => Array(9).fill()); //matrix
+//const grid = document.getElementById("grid"); //de ce daca fac linia asta ca si comentariu, tot imi este recunoscut grid-ul?
 
-//for count-up timer
-const secondsLabel = document.getElementById("seconds");
-var startTimer = "start";
-var countSeconds = 0;
-
-const remainingFlags = document.getElementById("remainingFlags");
-var countFlags = 0;
-
-var gameEnd = false; //will be true when won game
-var clickedSquares = 0; //will be used to check if the user won game
+let globalState = {
+    grid: document.getElementById("grid"),
+    width: 9,
+    height: 9,
+    nrOfBombs: 10,
+    squaresMatrix: Array(9).fill().map(() => Array(9).fill()),
+    secondsLabelTimer: document.getElementById("seconds"),
+    startTimer: "start",
+    countSeconds: 0,
+    remainingFlags: document.getElementById("remainingFlags"),
+    countFlags: 0,
+    clickedSquares: 0,
+    gameEnd: false,
+}
 
 function generateBoard() {
     //make the shuffled array which contains the 'normals' (numbers) and the 'bombs'
-    const normalsArray = new Array(width * height - nrOfBombs).fill("normals"); //build an array of length 71 with all the elements named "normals"
-    const bombsArray = new Array(nrOfBombs).fill("bombs");
-    const normalsAndBombs = normalsArray.concat(bombsArray)
+    const normalsArray = new Array(globalState.width * globalState.height - globalState.nrOfBombs).fill("normals");
+    const bombsArray = new Array(globalState.nrOfBombs).fill("bombs");
+    const normalsAndBombs = normalsArray.concat(bombsArray);
     const shuffle = normalsAndBombs.sort(() => Math.random() - 0.5);
 
-    //make the squares
-    for (let i = 0, k = 0; i < width; ++i) {
-    	for (let j = 0; j < height; ++j) {
-            var square = document.createElement("div");
+  //make the squares
+    for (let i = 0, k = 0; i < globalState.width; ++i) {
+        for (let j = 0; j < globalState.height; ++j) {
+            let square = document.createElement("div");
             square.setAttribute("id", i + "" + j);
             square.classList.add(shuffle[k++]); 
-            squaresArray[i][j] = square;
-            grid.appendChild(square);
+            globalState.squaresMatrix[i][j] = square;
+            globalState.grid.appendChild(square);
             
             square.addEventListener("click", function() { //left click
-            	clickSquare(squaresArray[i][j], i, j);
-            });
+                clickSquare(globalState.squaresMatrix[i][j], i, j);
+            })
 
             square.addEventListener("contextmenu", function(e) { //right click
-            	e.preventDefault(); //delete all previous events
-            	addFlag(squaresArray[i][j]);
-            });
+                e.preventDefault(); //delete all previous events
+                addFlag(globalState.squaresMatrix[i][j]);
+            })
         }
     }
     addNumberInSquares();
 }
 
 function addNumberInSquares() {
-    for (let i = 0; i < width; ++i) {
-        for (let j = 0; j < height; ++j) {
-	    let neighborBombs = 0;
-	    if (squaresArray[i][j].classList.contains("normals")) {
-            	//check the neighboring squares to find out how many bombs there are
-	        for (let line = i - 1; line < i + 2 && line < width; ++line) {
-		    for (let col = j - 1; col < j + 2 && col < height; ++col) {
-		        if (checkIfPosInBoard(line, col)) {
-			    if (squaresArray[line][col].classList.contains("bombs")) {
-			        ++neighborBombs;
-			    }
+	for (let i = 0; i < globalState.width; ++i) {
+		for (let j = 0; j < globalState.height; ++j) {
+			let neighborBombs = 0;
+			if (globalState.squaresMatrix[i][j].classList.contains("normals")) {
+                //check the neighboring squares to find out how many bombs there are
+				for (let line = i - 1; line < i + 2 && line < globalState.width; ++line) {
+					for (let col = j - 1; col < j + 2 && col < globalState.height; ++col) {
+						if (checkIfPosInBoard(line, col)) {
+							if (globalState.squaresMatrix[line][col].classList.contains("bombs")) {
+								++neighborBombs;
+							}
+						}
+					}
+				}
+				globalState.squaresMatrix[i][j].setAttribute("neighborBombs", neighborBombs);
+				//globalState.squaresMatrix[i][j].innerHTML = neighborBombs; //to verify if square's neighbor bombs is correct
 			}
-		    }
 		}
-		squaresArray[i][j].setAttribute("neighborBombs", neighborBombs);
-	    }
 	}
-    }
 }
 
 function checkIfPosInBoard (line, col) {
-    if (0 <= line && line <= 8 && 0 <= col && col <= 8) {
-	return true;
-    }
+	if (0 <= line && line <= 8 && 0 <= col && col <= 8) {
+		return true;
+	}
 }
 
 function clickSquare(square, line, col) {
-    if (gameEnd || square.classList.contains("clicked") || square.classList.contains("flags")) {
-        return;
-    }
+	if (globalState.gameEnd || square.classList.contains("clicked") || square.classList.contains("flags")) {
+		return;
+	}
 
-    if (startTimer == "start") { //start the timer on the first left click on a square
-        setInterval(startCountUpTimer, 1000); //repeat function startCountUpTimer() every 1000 milisecunde = 1 sec.
-	startTimer = "continue";
-    }
+	if (globalState.startTimer == "start") { //start the timer on the first left click on a square
+	  setInterval(startCountUpTimer, 1000); //repeat function startCountUpTimer() every 1000 milisecunde = 1 sec.
+	  globalState.startTimer = "continue";
+	}
 
-    if (square.classList.contains("bombs")) {
-        lostGame();
-    } else {
+	if (square.classList.contains("bombs")) {
+	  lostGame();
+	} else {
         const neighborBombs = square.getAttribute("neighborBombs");
         square.classList.add("clicked");
 
-        ++clickedSquares;
-        if (clickedSquares == width * height - nrOfBombs) {
+        ++globalState.clickedSquares;
+        if (globalState.clickedSquares == globalState.width * globalState.height - globalState.nrOfBombs) {
             winGame();
         }
 
@@ -103,67 +105,67 @@ function clickSquare(square, line, col) {
                 }
             }
         }
-    }
+	}
 }
 
 function startCountUpTimer() {
-    if (gameEnd || countSeconds == 999) {
-        return;
-    }
-    ++countSeconds;
-    secondsLabel.innerHTML = printTimer(countSeconds);
+	if (globalState.gameEnd || globalState.countSeconds == 999) {
+  	    return;
+	}
+	++globalState.countSeconds;
+	globalState.secondsLabelTimer.innerHTML = printTimer(globalState.countSeconds);
 }
 
 function printTimer(val) {
-    let valString = val + ""; //we make it a string to find easier the length of the number
-    while (valString.length < 3) {
-        valString = "0".concat(valString);
-    }
-    return valString;
+	let valString = val + ""; //we make it a string to find easier the length of the number
+	while (valString.length < 3) {
+	    valString = "0".concat(valString);
+	}
+	return valString;
 }
 
 function addFlag(square) {
-    if (gameEnd) {
+	if (globalState.gameEnd) {
         return;
-    }
+	}
 
-    if (startTimer == "start" && square.classList.contains("normals")) { //start the timer on the first flag on a square
+	if (globalState.startTimer == "start" && square.classList.contains("normals")) { //start the timer on the first flag on a square
         setInterval(startCountUpTimer, 1000);
-        startTimer = "continue";
-    }
+        globalState.startTimer = "continue";
+	}
 
-    if (!square.classList.contains("clicked") && !square.classList.contains("flags")) {
+	if (!square.classList.contains("clicked") && !square.classList.contains("flags")) {
         square.classList.add("flags");
-        ++countFlags;
+        ++globalState.countFlags;
         square.innerHTML = "🚩";
-        remainingFlags.innerHTML = nrOfBombs - countFlags;
-    } else if (square.classList.contains("flags")) {
+        globalState.remainingFlags.innerHTML = globalState.nrOfBombs - globalState.countFlags;
+	} else if (square.classList.contains("flags")) {
         square.classList.remove("flags");
         square.innerHTML = "";
-        --countFlags;
-        remainingFlags.innerHTML = nrOfBombs - countFlags;
-    }
+        --globalState.countFlags;
+        globalState.remainingFlags.innerHTML = globalState.nrOfBombs - globalState.countFlags;
+	}
 }
 
 function winGame() {
-    gameEnd = true;
+    globalState.gameEnd = true;
     document.getElementById("gameStatus").innerHTML = "CONGRATULATIONS, YOU WON!";
     document.getElementById("resetButton").innerHTML = "😎";
 }
 
 function lostGame() {
-    gameEnd = true;
+    globalState.gameEnd = true;
     document.getElementById("gameStatus").innerHTML = "GAME OVER, YOU LOST!";
     document.getElementById("resetButton").innerHTML = "😱";
 
     //print all the bombs and the good and bad flags
-    for (let i = 0; i < width; ++i) {
-        for (let j = 0; j < height; ++j) {
-            if (!squaresArray[i][j].classList.contains("bombs") && squaresArray[i][j].classList.contains("flags")) {
-                squaresArray[i][j].classList.add("wrongFlag");
-                squaresArray[i][j].innerHTML = "🚩";
-            } else if (squaresArray[i][j].classList.contains("bombs") && !squaresArray[i][j].classList.contains("flags")) {
-                squaresArray[i][j].innerHTML = "💣";
+    for (let i = 0; i < globalState.width; ++i) {
+        for (let j = 0; j < globalState.height; ++j) {
+            if (!globalState.squaresMatrix[i][j].classList.contains("bombs") && globalState.squaresMatrix[i][j].classList.contains("flags")) {
+                globalState.squaresMatrix[i][j].classList.add("wrongFlag");
+                globalState.squaresMatrix[i][j].innerHTML = "🚩";
+            } else if (globalState.squaresMatrix[i][j].classList.contains("bombs") && !globalState.squaresMatrix[i][j].classList.contains("flags")) {
+                globalState.squaresMatrix[i][j].innerHTML = "💣";
             }
         }
     }
