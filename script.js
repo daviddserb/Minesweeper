@@ -31,12 +31,12 @@ function generateBoard() {
             grid.appendChild(square);
             
             square.addEventListener("click", function() { //left click
-            clickSquare(squaresArray[i][j], i, j);
+            	clickSquare(squaresArray[i][j], i, j);
             });
 
             square.addEventListener("contextmenu", function(e) { //right click
-            e.preventDefault(); //delete all previous events
-            addFlag(squaresArray[i][j]);
+            	e.preventDefault(); //delete all previous events
+            	addFlag(squaresArray[i][j]);
             });
         }
     }
@@ -48,7 +48,7 @@ function addNumberInSquares() {
         for (let j = 0; j < height; ++j) {
 	    let neighborBombs = 0;
 	    if (squaresArray[i][j].classList.contains("normals")) {
-            //check the neighboring squares to find out how many bombs there are
+            	//check the neighboring squares to find out how many bombs there are
 	        for (let line = i - 1; line < i + 2 && line < width; ++line) {
 		    for (let col = j - 1; col < j + 2 && col < height; ++col) {
 		        if (checkIfPosInBoard(line, col)) {
