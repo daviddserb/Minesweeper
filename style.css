@@ -1,33 +1,57 @@
+.game {
+    position: relative;
+}
+
+.above {
+    position: absolute;
+    bottom: 100%;
+
+    width: 100%;
+    text-align: center;
+}
+
+#countUpTimer, #flagCounter {
+    display: inline-block;
+}
+
+.under {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    text-align: center;
+}
+
 #grid {
-  display: grid;
-  grid-template-columns: repeat(9, auto);
-  width: 300px; /*the spacing between the columns formed by the squares*/
-  margin: 200px auto; /*page positioning, horizontal and vertical*/
+    display: grid;
+    grid-template-columns: repeat(9, auto);
+
+    width: 300px; /*the spacing between the columns formed by the squares*/
+
+    margin: 200px auto; /*page positioning, horizontal and vertical*/
 }
 
 #grid div {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #000000;
-  box-shadow: 0 0 0 1px #000000; /*the 4 outer lines*/
-  cursor: pointer;
-  text-align: center; /*numbers in the middle of the square*/
-  font-size: 25px; /*size of the numbers*/
+    width: 40px;
+    height: 40px;
+    
+    border: 1px solid #000000;
+    box-shadow: 0 0 0 1px #000000; /*the 4 outer lines*/
+
+    text-align: center; /*numbers in the middle of the square*/
+    font-size: 25px; /*size of the numbers*/
+
+    cursor: pointer;
 }
 
 .clicked {
-  background-color: green;
+    background-color: green;
 }
 
 .wrongFlag {
-  background-color: pink;
+    background-color: pink;
 }
 
-#resetButton {
-  margin: auto;
-  display: grid;
-}
-
-/*.bombs {
-  background-color: red;
-}*/
+/* for testing */
+/* .bombs {
+    background-color: red;
+} */
