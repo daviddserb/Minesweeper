@@ -13,6 +13,8 @@ let globalState = {
     gameEnd: false,
 }
 
+document.getElementById("bombCount").innerHTML = globalState.nrOfBombs;
+
 function generateBoard() {
     // Generate the shuffled array which contains the valid and the boms
     const normalsArray = new Array(globalState.width * globalState.height - globalState.nrOfBombs).fill("normals");
