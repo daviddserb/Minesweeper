@@ -45,7 +45,6 @@ body {
     box-shadow: 0 0 0 1px #000000; /*the 4 outer lines*/
     cursor: pointer;
     background-color: white;
-
 }
 
 #grid div.clicked {
