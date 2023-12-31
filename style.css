@@ -25,8 +25,8 @@ body {
     display: inline-grid;
     grid-template-columns: repeat(9, auto);
 
-    width: 460px; /*the spacing between the columns formed by the squares*/
-    margin: 20px auto; /*page positioning, horizontal and vertical*/
+    width: 460px; /* The spacing between the columns formed by the squares */
+    margin: 20px auto;
 }
 
 #grid div {
@@ -39,10 +39,10 @@ body {
     width: 50px;
     height: 50px;
 
-    font-size: 25px; /*size of the numbers*/
+    font-size: 25px;
     
     border: 1px solid #000000;
-    box-shadow: 0 0 0 1px #000000; /*the 4 outer lines*/
+    box-shadow: 0 0 0 1px #000000;
     cursor: pointer;
     background-color: white;
 }
@@ -56,19 +56,19 @@ body {
 }
 
 #resetButton {
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: blue;
     font-size: 3rem;
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 20px; /* Adjust the margin as needed */
+    margin-top: 20px;
 }
 
 #resetButton:hover {
-    background-color: #0056b3; /* Darker shade for hover effect */
+    background-color: darkblue;
 }
 
-/* for testing: */
+/* For testing */
 /* .bombs {
     background-color: red;
 } */
