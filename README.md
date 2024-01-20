@@ -1,8 +1,8 @@
 # Minesweeper - Game Clone in JavaScript
 
-Embark on a strategic puzzle game that requires players to skillfully uncover hidden mines on a grid using numeric clues to avoid detonation and clear the board for victory.
-
 Try the game live: https://daviddserb.github.io/Minesweeper/
+
+Embark on a strategic puzzle game that requires players to skillfully uncover hidden mines on a grid using numeric clues to avoid detonation and clear the board for victory.
 
 How to play:
 1. Use the mouse to left-click on the squares.
